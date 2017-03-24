@@ -32,26 +32,28 @@
     </header>
 
     <main>
-<!--      <p class="bold">Hello</p>
-      <p>Quick app:</p>
-       <form>
-        <input type="text" maxlength="100" placeholder="type here!">
-        <button type="submit">Submit</button>
-      </form> -->
-      <section class="dreams">
-        <ul id="dreams">
-        </ul>
-      </section>
-      <button ng-click="moreflightscount =0; updateflights(0);" type="submit">Refresh Flights</button>
-      <section class="dreamlist">
-        <ul id="dreamsl">
-           <li class="" ng-repeat="flight in flights track by $index"><i class="fa fa-plane"></i> {{flight.flightName}}  <span ng-repeat="codeshare in flight.codeshares.codeshares">Code shares: {{codeshare}}</span>  <button class="details-button" ng-click="flight.show = !flight.show"><i class="fa fa-expand"></i> Show details</button>
+<!--      <p class="bold">Hello</p> -->
+      <form>
+        
+        Search flights <br>
+        <input type="text" maxlength="100" placeholder="filter text" ng-model="filterText">
+        <button ng-click="filterText = 'DEP'" >Departures</button> 
+        <button ng-click="filterText = 'ARR'" >Arrivals</button> 
+        <button ng-click="filterText = 'KLM'" >KLM</button> 
+        <br>
+        <button ng-click="moreflightscount =0; updateflights(0);" >Refresh Flights</button>
+      </form>
+      <section class="flightslist">
+        <ul id="flights">
+           <li ng-click="flight.show = !flight.show" class="" ng-repeat="flight in (flights | filter:filterText) track by $index"><i class="fa fa-plane"></i> {{flight.flightName}}  <span ng-repeat="codeshare in flight.codeshares.codeshares">Code shares: {{codeshare}}</span>  <button class="details-button" ><i class="fa fa-expand"></i> Show details</button>
              <ul ng-show="flight.show">
                <li><i class="fa fa-shopping-bag"></i> Baggage Belt <span ng-repeat="belt in flight.baggageClaim.belts">{{belt}}</span> 
                  expected time on belt: {{flight.expectedTimeOnBelt | date:'medium'}}</li>
-                 <li><i class="fa fa-fighter-jet"></i> Plane type {{flight.aircraftType.iatamain}} {{flight.aircraftType.iatasub}} </li>
-                  <button class="" ng-click="flight.showOthers = !flight.showOthers"><i class="fa fa-expand"></i> Show other details</button>
+               <li><i class="fa fa-fighter-jet"></i> Plane type {{flight.aircraftType.iatamain}} {{flight.aircraftType.iatasub}} </li>
+               <li>Status: <span ng-repeat="status in flight.publicFlightState.flightStates" title="{{$parent.$parent.flightStatusCodes[status].description}}">{{$parent.$parent.flightStatusCodes[status].name}}, </span></li>
+               <li><i class="fa fa-map-signs"></i> Gate: {{flight.gate}}</li>
                <li>
+                  <button class="" ng-click="flight.showOthers = !flight.showOthers"><i class="fa fa-expand"></i> Show other details</button>
                <ul ng-show="flight.showOthers">
                  <li ng-repeat="(key, value) in flight track by $index">{{key}}: {{key.includes('Time')?(value | date:'medium'):value}}</li>               
                </ul>
@@ -60,7 +62,7 @@
           </li>
         </ul>
         
-      <button ng-click="moreflightscount = moreflightscount+1; updateflights(moreflightscount)" type="submit">Get More Flights</button>
+      <button ng-click="moreflightscount = moreflightscount+1; updateflights(moreflightscount)" >Get More Flights</button>
       </section>
     </main>
 
