@@ -1,0 +1,83 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: http://mozilla.github.io/nunjucks/ -->
+<!-- jade: http://jade-lang.com/ -->
+<!-- haml: http://haml.info/tutorial.html -->
+<!-- hbs(handlebars): http://handlebarsjs.com/expressions.html -->
+
+<!DOCTYPE html>
+<html lang="en" ng-app="hyperdev">
+  <head>
+    <title>Playing with the Schiphol API</title>
+    <meta name="description" content="¯\_(ツ)_/¯ getting the schiphol API but now what">
+    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="https://cdn.glitch.com/a6d05ead-4581-4e53-98db-5130348c08a8%2FMartz90-Circle-Addon2-Plane-flight.ico?1490350838192">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  </head>
+  <body  ng-controller="HyperDevController as hypdev">
+    <header>
+      <h1>
+        Playing with the Schiphol API!
+      </h1>
+      <p>
+        The Amsterdam airport, Schiphol, has opened up an API with some info about it. Here's an example of using it. 
+      </p>
+      <a href="https://developer.schiphol.nl" target="_blank">https://developer.schiphol.nl</a>
+    </header>
+
+    <main>
+<!--      <p class="bold">Hello</p>
+      <p>Quick app:</p>
+       <form>
+        <input type="text" maxlength="100" placeholder="type here!">
+        <button type="submit">Submit</button>
+      </form> -->
+      <section class="dreams">
+        <ul id="dreams">
+        </ul>
+      </section>
+      <button ng-click="moreflightscount =0; updateflights(0);" type="submit">Refresh Flights</button>
+      <section class="dreamlist">
+        <ul id="dreamsl">
+           <li class="" ng-repeat="flight in flights track by $index"><i class="fa fa-plane"></i> {{flight.flightName}}  <span ng-repeat="codeshare in flight.codeshares.codeshares">Code shares: {{codeshare}}</span>  <button class="details-button" ng-click="flight.show = !flight.show"><i class="fa fa-expand"></i> Show details</button>
+             <ul ng-show="flight.show">
+               <li><i class="fa fa-shopping-bag"></i> Baggage Belt <span ng-repeat="belt in flight.baggageClaim.belts">{{belt}}</span> 
+                 expected time on belt: {{flight.expectedTimeOnBelt | date:'medium'}}</li>
+                 <li><i class="fa fa-fighter-jet"></i> Plane type {{flight.aircraftType.iatamain}} {{flight.aircraftType.iatasub}} </li>
+                  <button class="" ng-click="flight.showOthers = !flight.showOthers"><i class="fa fa-expand"></i> Show other details</button>
+               <li>
+               <ul ng-show="flight.showOthers">
+                 <li ng-repeat="(key, value) in flight track by $index">{{key}}: {{key.includes('Time')?(value | date:'medium'):value}}</li>               
+               </ul>
+               </li>
+             </ul>
+          </li>
+        </ul>
+        
+      <button ng-click="moreflightscount = moreflightscount+1; updateflights(moreflightscount)" type="submit">Get More Flights</button>
+      </section>
+    </main>
+
+    <footer>
+      Tinker app made by <a href="http://madmaxlax.com">
+        Max Struever</a>. You can  
+      <a href="https://hyperdev.com">remix this in HyperDev</a>
+    </footer>
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+    <script src="/client.js"></script>
+
+  </body>
+</html>
